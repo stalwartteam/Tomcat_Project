@@ -59,7 +59,7 @@ After that restart tomcat services to effect these changes
    tomcatup
    ```
 1. Update users information in the tomcat-users.xml file
-goto tomcat home directory and Add below users to conf/tomcat-user.xml file
+goto tomcat home directory and Add below users to /opt/tomcat/conf file
    ```sh
 	<role rolename="manager-gui"/>
 	<role rolename="manager-script"/>
