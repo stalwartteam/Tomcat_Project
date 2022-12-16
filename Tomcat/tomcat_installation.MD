@@ -1,26 +1,34 @@
 # Tomcat installation on EC2 instance
 
 ### Pre-requisites
-1. EC2 instance with Java v1.8.x 
+1. EC2 instance with Java Installation
+    ```sh
+    amazon-linux-extras install epel
+    amazon-linux-extras install java-openjdk11 -y
+    ```
 
 ### Install Apache Tomcat
 1. Download tomcat packages from  https://tomcat.apache.org/download-80.cgi onto /opt on EC2 instance
    ```sh 
-   # Create tomcat directory
+   # Download tomcat
    cd /opt
-   wget http://mirrors.fibergrid.in/apache/tomcat/tomcat-8/v8.5.35/bin/apache-tomcat-8.5.35.tar.gz
-   tar -xvzf /opt/apache-tomcat-8.5.35.tar.gz
+   wget https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.84/bin/apache-tomcat-8.5.84.tar.gz
+   tar -xvzf apache-tomcat-8.5.84.tar.gz
+   ```
+   Now Rename tomcat version to tomcat for better naming convention
+   ```sh
+   mv apache-tomcat-8.5.84 tomcat
    ```
 1. give executing permissions to startup.sh and shutdown.sh which are under bin. 
    ```sh
-   chmod +x /opt/apache-tomcat-8.5.35/bin/startup.sh 
-   shutdown.sh
+   chmod +x /opt/tomcat/bin/startup.sh 
+   startup.sh
    ```
 
 1. create link files for tomcat startup.sh and shutdown.sh 
    ```sh
-   ln -s /opt/apache-tomcat-8.5.35/bin/startup.sh /usr/local/bin/tomcatup
-   ln -s /opt/apache-tomcat-8.5.35/bin/shutdown.sh /usr/local/bin/tomcatdown
+   ln -s /opt/tomcat/bin/startup.sh /usr/local/bin/tomcatup
+   ln -s /opt/tomcat/bin/shutdown.sh /usr/local/bin/tomcatdown
    tomcatup
    ```
   #### Check point :
@@ -29,7 +37,7 @@ access tomcat application from browser on port 8080
 
   Using unique ports for each application is a best practice in an environment. But tomcat and Jenkins runs on ports number 8080. Hence lets change tomcat port number to 8090. Change port number in conf/server.xml file under tomcat home
    ```sh
- cd /opt/apache-tomcat-8.5.35/conf
+ cd /opt/tomcat/conf
 # update port number in the "connecter port" field in server.xml
 # restart tomcat after configuration update
 tomcatdown
@@ -61,5 +69,5 @@ goto tomcat home directory and Add below users to conf/tomcat-user.xml file
 	<user username="deployer" password="deployer" roles="manager-script"/>
 	<user username="tomcat" password="s3cret" roles="manager-gui"/>
    ```
-1. Restart serivce and try to login to tomcat application from the browser. This time it should be Successful
+Restart serivce and try to login to tomcat application from the browser. This time it should be Successful
 
